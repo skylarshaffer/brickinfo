@@ -34,34 +34,29 @@ Install the extension, grant permissions (if necessary), and browse [Pick a Bric
 
 ### Update Database
 
-**These instructions are currently outdated, as the database building has switch to a purely BL XML source. Instructions will be updated soon.**
+All below database operations will take place in the **data** folder.
 
-Download the source zip, extract it, and copy the **data** folder wherever you want. All below database operations will take place in the **data** folder.
-
-#### Parts
-
-1. Login to [Bricklink](https://bricklink.com)
-2. Download the **Part and Color Codes XML**. Either:
-    1. Click [here](https://www.bricklink.com/catalogDownload.asp?downloadType=X&viewType=5) to download the latest file.
+1. Download the source zip, extract it, and copy the **data** folder wherever you want. 
+2. Login to [Bricklink](https://bricklink.com)
+3. Download latest **codes.xml** and **colors.xml** from Bricklink. Either:
+    1. Download from the below links:
+        1. [codes.xml](https://www.bricklink.com/catalogDownload.asp?downloadType=X&viewType=5)
+        2. [colors.xml](https://www.bricklink.com/catalogDownload.asp?downloadType=X&viewType=5)
     
     **OR**
     
-    2. Navigate to [Catalog Download](https://www.bricklink.com/catalogDownload.asp) and select the **Part and Color Codes** radio and set the dropdown from **Tab-Delimited File** to **XML**.
+    1. Navigate to [Catalog Download](https://www.bricklink.com/catalogDownload.asp)
+        1. codes.xml - Select the **Part and Color Codes** radio and set the dropdown from **Tab-Delimited File** to **XML**. Click **Download**.
+        2. colors.xml - Select the **Colors** radio and set the dropdown from **Tab-Delimited File** to **XML**. Click **Download**.
 
-    ![image](https://github.com/skylarshaffer/brickinfo/assets/161654841/e9741ac8-24ad-4616-8dc2-b5cd5868c9d2)
+        ![image](https://github.com/skylarshaffer/brickinfo/assets/161654841/e9741ac8-24ad-4616-8dc2-b5cd5868c9d2)
 
-3. Replace **data/xml/codes.xml** with the one you just downloaded.
-4. Run **data/codesToElementToPart.js** to update **data/js/elementToPart.js**.
-
-#### Colors
-
-1. Edit **data/api.js**
-2. Replace `<YOUR REBRICKABLE API KEY HERE>` with your Rebrickable API key and save the file. You can get one by following the instructions here: [Rebrickable API](https://rebrickable.com/api/)
-3. Run **data/fetchColors.js** to update **data/js/colors.js**.
+4. Replace **data/xml/codes.xml** and **data/xml/colors.xml** with the ones you just downloaded.
+5. Run **data/fetch/codesXmlColorsXmlToElementIdToBlPartIdBlColorId.js** to update **data/js/elementIdToBlPartIdColorId.js**.
 
 ### Replace Extension Database
 
-1. Copy both **data/js/colors.js** and **data/js/elementToPart.js** to **brickinfo/data**, replacing the existing files.
+Copy **data/db/elementIdToBlPartIdColorId.js** to **brickinfo/data**, replacing the existing file.
 
 ## Version History
 
@@ -72,9 +67,7 @@ Download the source zip, extract it, and copy the **data** folder wherever you w
 
 - [ ] Bricklink Affiliate API key is not yet provided, and must be added to source. This key was leaked, and I disclosed it to Bricklink, meaning it may stop working at any time
 
-- [ ] Prices for elements will not show if that element does not have at least one 
-
-- [ ] Rebrickable API key must be added to data to update colors list. This can be easily obtained at [Rebrickable API](https://rebrickable.com/api/)
+- [ ] Prices for elements will not show if that element does not have at least one
 
 ## Roadmap
 
@@ -92,7 +85,7 @@ Download the source zip, extract it, and copy the **data** folder wherever you w
 
 - [ ] Add fallback average price algorithms when necessary values are not present in inventory_used
 
-- [ ] Maybe switch over to per-div scraping for element ID and eliminate need for LEGO.com GraphQL at all. Would require element to color DB expansion
+- [x] Maybe switch over to per-div scraping for element ID and eliminate need for LEGO.com GraphQL at all. Would require element to color DB expansion
 
 - [ ] Add user customization for average price type (Used, New, etc)
 
@@ -104,17 +97,11 @@ Download the source zip, extract it, and copy the **data** folder wherever you w
 
 ## APIs
 
-- [Rebrickable API](https://rebrickable.com/api/)
-
-- LEGO.com GraphQL API [REDACTED]
-
 - Bricklink Affiliate API [REDACTED]
 
 ## Acknowledgments
 
-- [Rebrickable API](https://rebrickable.com/api/) used for LEGO to Bricklink Color ID conversion.
+- [Bricklink Catalog Download](https://www.bricklink.com/catalogDownload.asp) used for Element ID to Bricklink Part ID and Color ID conversion.
 
-- [Bricklink Catalog Download](https://www.bricklink.com/catalogDownload.asp) used for LEGO to Bricklink Part ID conversion.
-
-- Bricklink, LEGO.com, and The LEGO Group have no affiliation with this tool whatsoever. Both APIs related to The LEGO Group are used for the purposes of this amateur project without approval.
+- Bricklink, LEGO.com, and The LEGO Group have no affiliation with this tool whatsoever. Bricklink Affiliate API is used for the purposes of this amateur project without approval.
 
