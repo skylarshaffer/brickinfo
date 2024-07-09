@@ -1,10 +1,24 @@
 import { parseString } from 'xml2js'
 import { readFile, writeFileSync } from 'fs'
-import { blColorNameToBlColorId } from '../db/blColorNametoBlColorId.js'
+
+let srcFile = '../xml/bl/colors.xml'
+
+let blColorNameToBlColorId = {}
+
+readFile(srcFile, function(err, data) {
+    parseString(data, function (err, result) {
+        const destObj = {};
+        const srcArray = result.CATALOG.ITEM
+        srcArray.forEach((item) => {
+            destObj[item.COLORNAME] = item.COLOR[0]
+        })
+        blColorNameToBlColorId = destObj
+    });
+});
 
 const dbName = 'elementIdToBlColorId'
 
-const srcFile = '../xml/bl/codes.xml'
+srcFile = '../xml/bl/codes.xml'
 
 const jsHeader = `export const ${dbName} = `
 
