@@ -1,0 +1,9 @@
+**/node_modules/**
+**/dist/main.js*
+node_modules
+**/.DS_Store
+**/api.js
+**/*.log
+**/.env
+react-*/server/public/*.js*
+.vscode

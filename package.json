@@ -1,0 +1,14 @@
+{
+  "name": "brickinfo",
+  "version": "1.0.0",
+  "description": "This sample demonstrates the `webRequest.onAuthRequired` listener to detect an authentication request and log the user into the designated site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/chrome": "^0.0.268"
+  }
+}

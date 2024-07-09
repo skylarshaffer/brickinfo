@@ -1,0 +1,24 @@
+{
+  "name": "brickinfo",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "An extension for injecting advanced part information on brick shopping websites.",
+  "background": {
+    "service_worker": "scripts/service-worker.js",
+    "mode": "module"
+  },
+  "web_accessible_resources": [{
+     "matches": ["<all_urls>"],
+     "resources": ["data/codes.js"]
+   }],
+  "permissions": ["webRequest"],
+  "host_permissions": ["https://www.lego.com/api/graphql/*","https://api.bricklink.com/api/affiliate/v1/*"],
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://www.lego.com/en-us/pick-and-build/*"
+      ]
+    }
+  ]
+}
