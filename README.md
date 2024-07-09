@@ -34,6 +34,8 @@ Install the extension, grant permissions (if necessary), and browse [Pick a Bric
 
 ### Update Database
 
+These instructions are currently outdated, as the database building has switch to a purely BL XML source. Instructions will be updated soon.
+
 Download the source zip, extract it, and copy the **data** folder wherever you want. All below database operations will take place in the **data** folder.
 
 #### Parts
