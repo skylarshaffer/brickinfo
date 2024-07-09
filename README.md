@@ -68,7 +68,7 @@ Download the source zip, extract it, and copy the **data** folder wherever you w
 
 ## Known Issues
 
-- [ ] Bricklink Affiliate API key is not yet provided, and must be added to source
+- [ ] Bricklink Affiliate API key is not yet provided, and must be added to source. This key was leaked, and I disclosed it to Bricklink, meaning it may stop working at any time
 
 - [ ] Prices for elements will not show if that element does not have at least one 
 
