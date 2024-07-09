@@ -71,6 +71,8 @@ Copy **data/db/elementIdToBlPartIdColorId.js** to **brickinfo/data**, replacing 
 
 ## Roadmap
 
+- [ ] Move API key variable to popup.js so extension can be packed
+
 - [ ] Obtain affiliate API key for this application (currently using scraped key)
 
 - [ ] Build packed extension
