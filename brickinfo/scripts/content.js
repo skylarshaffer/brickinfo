@@ -8,7 +8,7 @@ function addBricklinkPrice(div, price) {
   const $priceDiv = div.querySelector('div:has(span[data-test="pab-item-price"])');
   const $bricklinkPriceDiv = $priceDiv.cloneNode(true)
   $bricklinkPriceDiv.className='ElementLeaf_bricklinkPrice'
-  $bricklinkPriceSpan = $bricklinkPriceDiv.querySelector('span[data-test="pab-item-price"]')
+  const $bricklinkPriceSpan = $bricklinkPriceDiv.querySelector('span[data-test="pab-item-price"]')
   $bricklinkPriceSpan.dataset.test = 'pab-item-bricklink-price'
   $bricklinkPriceSpan.textContent = `BL: $${price}`
   div.insertBefore($bricklinkPriceDiv,$priceDiv.nextSibling);
@@ -19,23 +19,36 @@ const observer = new MutationObserver((mutationList) => {
     if (mutation.type === 'attributes' && mutation.attributeName === 'data-test') {
       if ($ul.dataset.test !== 'pab-search-results-list-loading') {
         const $divs = document.querySelectorAll('div[data-test="pab-item"]');
+        const elementsArr = []
         $divs.forEach((div) => {
-          const element = {}
-          element.bricklink = {}
           const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')
-          const $priceSpan = div.querySelector('span[data-test="pab-item-price"]')
           if ($itemIdSpan) {
-            element.id = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
-            chrome.runtime.sendMessage({ name: 'getBlDetails', elementId: element.id }, (response) => {
-              element.bricklink = {
-                colorId: response.bricklink_color_id,
-                price: response.bricklink_price
+            const elementId = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
+            elementsArr.push(elementId)
+          }
+        })
+        chrome.runtime.sendMessage({ name: 'fetchPrices', elementsArr })
+        const elementsObj = {}
+        $divs.forEach((div) => {
+          const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')
+          const element = {}
+          if ($itemIdSpan) {
+            const elementId = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
+            console.log('sending getBlPrice')
+            const element = {}
+            element.bricklink = {}
+            chrome.runtime.sendMessage({ name: 'getBlPrice', elementId }, (response) => {
+              console.log('got back getBlPrice')
+              console.log('response is: ', response)
+              element.bricklink.price = response
+              
+              console.log('element: ',element)
+              if (typeof element.bricklink.price !== 'undefined') {
+                if (!isNaN(element.bricklink.price) && element.bricklink.price !== null) {
+                  addBricklinkPrice(div,element.bricklink.price)
+                }
               }
-              console.log('id: ',element.id, 'blColorId: ',element.bricklink.colorId,'blPrice: ',element.bricklink.price)
-              if (typeof element.bricklink.price !== 'undefined' && !isNaN(element.bricklink.price) && element.bricklink.price !== null) {
-                addBricklinkPrice(div,element.bricklink.price)
-              }
-              if($divs[$divs.length-1] === div){
+              if($divs[$divs.length-1] === div) {
                 console.log("Last Element")
                 chrome.runtime.sendMessage({ name: 'pricesDone'})
               }
@@ -47,11 +60,6 @@ const observer = new MutationObserver((mutationList) => {
   })
 })
 
-
 const target = $ul
 const config = { attributes: true };
 observer.observe(target, config);
-
-//     const blPrice = await fetch(`https://api.bricklink.com/api/store/v1/items/part/${designId}/price?guide_type=stock&region=north_america&color_id=5`).json
-//    const rbFetch = fetch(`https://rebrickable.com/api/v3/lego/elements/${elementId}/`)
-//    console.log('id: ',element.id, 'blPartId: ',element.bricklink.partId, 'blColorId: ',element.bricklink.colorId)
