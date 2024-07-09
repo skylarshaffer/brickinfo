@@ -16,7 +16,7 @@ readFile(srcFile, function(err, data) {
     });
 });
 
-const dbName = 'elementIdToBlColorId'
+const dbName = 'elementIdToBlPartIdColorId'
 
 srcFile = '../xml/bl/codes.xml'
 
@@ -27,7 +27,7 @@ readFile(srcFile, function(err, data) {
         const destObj = {}
         const srcArray = result.CODES.ITEM
         srcArray.forEach((item) => {
-            destObj[item.CODENAME] = blColorNameToBlColorId[item.COLOR[0]]
+            destObj[item.CODENAME] = { partId: item.ITEMID[0], colorId: blColorNameToBlColorId[item.COLOR[0]] }
         })
         writeFileSync(`../db/${dbName}.js`, jsHeader + (JSON.stringify(destObj, null, 2)))
     });
