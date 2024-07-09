@@ -22,8 +22,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 ### Extension
 
 1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want.
-2. Add a file titled **api.js** to the folder **brickinfo/data**.
-3. Write the following to the file: `const blAffiliateApiKey = '<YOUR AFFILIATE API KEY>'`.
+2. Edit **brickinfo/data/api.js**.
+3. Replace `<YOUR AFFILIATE API KEY HERE>` with your Bricklink Affiliate API key and save the file. This key is not publicly available and I will not tell you where to find one. I am working on getting my own.
 4. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
 
 ## Usage
@@ -48,13 +48,13 @@ Download the source zip, extract it, and copy the **data** folder wherever you w
 
     ![image](https://github.com/skylarshaffer/brickinfo/assets/161654841/e9741ac8-24ad-4616-8dc2-b5cd5868c9d2)
 
-3. Replace **data/xml/codes.xml** with the one you just downloaded
+3. Replace **data/xml/codes.xml** with the one you just downloaded.
 4. Run **data/codesToElementToPart.js** to update **data/js/elementToPart.js**.
 
 #### Colors
 
-1. Add a new file to **data**: **data/api.js**
-2. Write the following to the file: `const rbApiKey = '<YOUR REBRICKABLE API KEY>'`.
+1. Edit **data/api.js**
+2. Replace `<YOUR REBRICKABLE API KEY HERE>` with your Rebrickable API key and save the file. You can get one by following the instructions here: [Rebrickable API](https://rebrickable.com/api/)
 3. Run **data/fetchColors.js** to update **data/js/colors.js**.
 
 ### Replace Extension Database
