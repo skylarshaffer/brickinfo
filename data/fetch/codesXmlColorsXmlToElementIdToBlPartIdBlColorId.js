@@ -20,7 +20,7 @@ const dbName = 'elementIdToBlPartIdColorId'
 
 srcFile = '../xml/bl/codes.xml'
 
-const jsHeader = `export const ${dbName} = `
+const jsHeader = `const ${dbName} = `
 
 readFile(srcFile, function(err, data) {
     parseString(data, function (err, result) {
