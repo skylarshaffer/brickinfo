@@ -27,33 +27,29 @@ const observer = new MutationObserver((mutationList) => {
             elementsArr.push(elementId)
           }
         })
-        chrome.runtime.sendMessage({ name: 'fetchPrices', elementsArr })
-        const elementsObj = {}
-        $divs.forEach((div) => {
-          const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')
-          const element = {}
-          if ($itemIdSpan) {
-            const elementId = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
-            console.log('sending getBlPrice')
-            const element = {}
-            element.bricklink = {}
-            chrome.runtime.sendMessage({ name: 'getBlPrice', elementId }, (response) => {
-              console.log('got back getBlPrice')
-              console.log('response is: ', response)
-              element.bricklink.price = response
-              
-              console.log('element: ',element)
-              if (typeof element.bricklink.price !== 'undefined') {
-                if (!isNaN(element.bricklink.price) && element.bricklink.price !== null) {
-                  addBricklinkPrice(div,element.bricklink.price)
+        chrome.runtime.sendMessage({ name: 'fetchPrices', elementsArr }, () => {
+          console.log('got fetchPrices')
+          $divs.forEach((div) => {
+            const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')
+            if ($itemIdSpan) {
+              const elementId = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
+              console.log('sending getBlPrice')
+              const element = {}
+              element.bricklink = {}
+              chrome.runtime.sendMessage({ name: 'getBlPrice', elementId }, (response) => {
+                console.log('got back getBlPrice')
+                console.log('response is: ', response)
+                element.bricklink.price = response
+                
+                console.log('element: ',element)
+                if (typeof element.bricklink.price !== 'undefined') {
+                  if (!isNaN(element.bricklink.price) && element.bricklink.price !== null) {
+                    addBricklinkPrice(div,element.bricklink.price)
+                  }
                 }
-              }
-              if($divs[$divs.length-1] === div) {
-                console.log("Last Element")
-                chrome.runtime.sendMessage({ name: 'pricesDone'})
-              }
-            })
-          }
+              })
+            }
+          })
         })
       }
     }

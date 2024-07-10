@@ -3,14 +3,14 @@
   "version": "1.0",
   "manifest_version": 3,
   "description": "An extension for injecting advanced part information on brick shopping websites.",
+  "action": {
+    "default_popup": "brickinfo.html",
+    "default_icon": "images/brickinfo.png"
+  },
   "background": {
     "service_worker": "scripts/service-worker.js",
     "mode": "module"
   },
-  "web_accessible_resources": [{
-     "matches": ["<all_urls>"],
-     "resources": ["data/codes.js"]
-   }],
   "permissions": ["webRequest"],
   "host_permissions": ["https://www.lego.com/api/graphql/*","https://api.bricklink.com/api/affiliate/v1/*"],
   "content_scripts": [
