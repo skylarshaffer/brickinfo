@@ -1,1 +1,1 @@
-const blAffiliateApiKey = '<YOUR AFFILIATE API KEY HERE>'
+const blAffiliateApiKey = '7QAb3MwqCw83qprXE2ArZoLiEZvZxjRf'

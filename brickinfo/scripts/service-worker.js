@@ -18,7 +18,6 @@ importScripts('../data/elementIdToBlPartIdColorId.js')
 importScripts('../data/api.js')
 
 let elementsObj = {}
-let apiLoading = true
 console.log(elementsObj)
 
 
@@ -81,37 +80,22 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
           }
         }
         console.log(elementsObj)
-        console.log('setting apiLoading false')
-        apiLoading = false
+        console.log({word: 'Success', desc: 'elementsObj done forming.'})
+        response({word: 'Success', desc: 'elementsObj done forming.'})
+        return
       })
     }).catch((err) => {
       console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request'})
     })
   }
   if (message.name === "getBlPrice") {
-    function returnPrice() {
-      if (apiLoading === false) {
-        const elementId = message.elementId
-        if (typeof elementsObj[elementId] !== 'undefined') {
-          response(elementsObj[elementId].bricklink.price)
-        } else {
-          console.log('test:',{word: 'Error', desc: 'Element property does not exist in elementsObj'})
-          response({word: 'Error', desc: 'Element property does not exist in elementsObj'});
-        }
-        if (typeof interval !== 'undefined') {
-          clearInterval(interval);
-        }
-      }
-    }
-    if (apiLoading === false) {
-      returnPrice()
+    const elementId = message.elementId
+    if (typeof elementsObj[elementId] !== 'undefined') {
+      response(elementsObj[elementId].bricklink.price)
     } else {
-      const interval = setInterval(returnPrice, 100);
+      console.log('test:',{word: 'Error', desc: 'Element property does not exist in elementsObj'})
+      response({word: 'Error', desc: 'Element property does not exist in elementsObj'});
     }
-  }
-  if (message.name === "pricesDone") {
-    apiLoading = true
-    console.log('setting apiLoading true')
   }
   return true
 })
