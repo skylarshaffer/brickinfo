@@ -1,6 +1,6 @@
 # brickinfo
 
-A quick and responsive Manifest V3 Chrome Extension that uses the LEGO.com Pick A Brick GraphQL API and the Bricklink Affiliate API to inject real-time aftermarket element prices into Pick a Brick.
+A quick and responsive Manifest V3 Chrome Extension that uses the Bricklink Affiliate API to inject real-time aftermarket element prices into Pick a Brick.
 
 ## Description
 
