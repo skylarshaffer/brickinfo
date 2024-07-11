@@ -11,7 +11,10 @@
     "service_worker": "scripts/service-worker.js",
     "mode": "module"
   },
-  "permissions": ["webRequest"],
+  "permissions": [
+    "webRequest",
+    "storage"
+  ],
   "host_permissions": ["https://www.lego.com/api/graphql/*","https://api.bricklink.com/api/affiliate/v1/*"],
   "content_scripts": [
     {
