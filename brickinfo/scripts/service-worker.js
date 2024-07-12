@@ -30,6 +30,76 @@ let elementsObj = {}
 console.log(elementsObj)
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
+  if (message.name === "getBlDb") {
+    let viewType
+    const blNewSessionId = message.blNewSessionId
+    const downloadType = message.downloadType
+    switch (downloadType) {
+      case 'types':
+        viewType = 1
+        break;
+      case 'categories':
+        viewType = 2
+        break;
+      case 'colors':
+        viewType = 3
+        break;
+      case 'codes':
+        viewType = 5
+        break;
+    }
+    fetch('https://www.bricklink.com/catalogDownload.asp?a=a',{
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Cookie': `BLNEWSESSIONID=${blNewSessionId}`
+        },
+        body: new URLSearchParams({ viewType: viewType })
+    }).then((res) => {
+        console.log(res)
+        if (res.status !== 200) {
+          console.log({word: 'Error', desc: 'There was a problem downloading db from Bricklink.'});
+          return
+        }
+        if (res.url.startsWith('https://www.bricklink.com/v2/login.page?')) {
+          response({word: 'Error', desc: 'Not logged in to Bricklink'});
+          return
+        } 
+        res.text().then((data) => {
+          switch (downloadType) {
+            case 'itemtypes':
+              if (data.startsWith('Item Type ID	Item Type Name')) {
+                console.log({word: 'Success', data: 'Downloaded itemtypes.txt. Responding with data.'})
+                response({word: 'Success',downloadType, data})
+              }
+              break;
+            case 'categories':
+              if (data.startsWith('Category ID	Category Name')) {
+                console.log({word: 'Success', data: 'Downloaded categories.txt. Responding with data.'})
+                response({word: 'Success',downloadType, data})
+              }
+              break;
+            case 'colors':
+              if (data.startsWith('Color ID	Color Name	RGB	Type	Parts	In Sets	Wanted	For Sale	Year From	Year To')) {
+                console.log({word: 'Success', data: 'Downloaded colors.txt. Responding with data.'})
+                response({word: 'Success',downloadType, data})
+              }
+              break;
+            case 'codes':
+              if (data.startsWith('Item No	Color	Code')) {
+                console.log({word: 'Success', data: 'Downloaded codes.txt. Responding with data.'})
+                response({word: 'Success',downloadType, data})
+              }
+              break;
+            default:
+              console.log({word: 'Exception', data: 'Response unexpected, proceeding anyway.'})
+              response({word: 'Exception',downloadType, data})
+          }
+        })   
+    }).catch((err) => {
+      console.log({word: 'Error', desc: 'There was a problem downloading db from Bricklink.'})
+    })
+  }
   if (message.name === "fetchPrices") {
     const blReqArr = []
     const elementsArr = message.elementsArr
@@ -69,7 +139,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
             console.log({word: 'Error', desc: 'Affiliate API is down at the moment. Please wait.'});
             return
           }
-          console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request'});
+          console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'});
           return
         }
         res.json().then((data) => {
@@ -93,7 +163,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
           response({word: 'Success', desc: 'elementsObj done forming.'})
         })
       }).catch((err) => {
-        console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request'})
+        console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'})
       })
     })
   }
@@ -103,8 +173,8 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       console.log('price is: ', elementsObj[elementId].bricklink.price)
       response(elementsObj[elementId].bricklink.price)
     } else {
-      console.log('test:',{word: 'Error', desc: 'Element property does not exist in elementsObj'})
-      response({word: 'Error', desc: 'Element property does not exist in elementsObj'});
+      console.log('test:',{word: 'Error', desc: 'Element property does not exist in elementsObj.'})
+      response({word: 'Error', desc: 'Element property does not exist in elementsObj.'});
     }
   }
   return true
