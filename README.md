@@ -22,15 +22,23 @@ The below assumes some coding experience and step detail is lacking. Better inst
 ### Extension
 
 1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want.
-2. Edit **brickinfo/data/api.js**.
-3. Replace `<YOUR AFFILIATE API KEY HERE>` with your Bricklink Affiliate API key and save the file. This key is not publicly available and I will not tell you where to find one. I am working on getting my own.
-4. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
 
 ## Usage
 
 ### Chrome Extension
 
-Install the extension, grant permissions (if necessary), and browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick).
+1. Install the extension (above)
+2. Grant permissions if prompted
+3. Add your affiliate API key
+   1. Click the extension icon to open the extension settings popup.
+   2. Replace **undefined** with your Affiliate API Key
+
+        ![image](https://github.com/user-attachments/assets/1d6682af-d37f-44d0-9ee2-8e628f05d8ce)
+      
+   3. Click **Save**
+   
+4.  Browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick).
 
 ### Update Database
 
