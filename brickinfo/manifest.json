@@ -4,8 +4,16 @@
   "manifest_version": 3,
   "description": "An extension for injecting advanced part information on brick shopping websites.",
   "action": {
-    "default_popup": "brickinfo.html",
-    "default_icon": "images/brickinfo.png"
+    "default_popup": "brickinfo.html"
+  },
+  "icons": {
+    "16": "images/brickinfo_16px.png",
+    "32": "images/brickinfo_32px.png",
+    "48": "images/brickinfo_48px.png",
+    "64": "images/brickinfo_64px.png",
+    "128": "images/brickinfo_128px.png",
+    "256": "images/brickinfo_256px.png",
+    "512": "images/brickinfo_512px.png"
   },
   "background": {
     "service_worker": "scripts/service-worker.js",
