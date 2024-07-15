@@ -169,7 +169,7 @@ $updateBlDbButton.addEventListener('click', () => {
                 const blElementsArr = colorsObjAndCodesArrToElements({colorsObj,codesArr})
                 console.log('blElementsArr: ',[blElementsArr[0],blElementsArr[1],blElementsArr[2]])
                 console.log('writing')
-                writeArrayToDb({dbName: 'BricklinkDB', dataArr: blElementsArr})
+                writeArrayToDb({dbName: 'BricklinkDB', objectStoreName: 'Elements', dataArr: blElementsArr})
                 console.log('done?')
             })
         } else {
@@ -178,14 +178,19 @@ $updateBlDbButton.addEventListener('click', () => {
     });
 });
 
-function createBlDb(event) {
-    console.log('event: ',event)
-    const db = event.target.result;
-    console.log('eventTargetResult: ',db)
-    const objectStore = db.createObjectStore("Elements", { keyPath: "elementId"});
-    objectStore.createIndex("partIdArr", "partIdArr", { unique: false });
-    objectStore.createIndex("colorIdArr", "colorIdArr", { unique: false });
-    return db
+async function createBlDb(event) {
+    const createPromise = new Promise((resolve, reject) => {
+        const transaction = event.target.transaction;
+        const db = event.target.result;
+        console.log('eventTargetResult: ',db)
+        const objectStore = db.createObjectStore("Elements", { keyPath: "elementId"});
+        objectStore.createIndex("partIdArr", "partIdArr", { unique: false });
+        objectStore.createIndex("colorIdArr", "colorIdArr", { unique: false });
+        objectStore.transaction.oncompleted = () => {resolve(db)}
+    })
+    const createResponse = await createPromise
+    console.log('createResponse: ',createResponse)
+    return createResponse
 }
 
 async function openBlDb ({dbName}) {
@@ -202,9 +207,9 @@ async function openBlDb ({dbName}) {
             resolve(db);
         };
 
-        request.onupgradeneeded = (event) => {
+        request.onupgradeneeded = async (event) => {
             console.log('onUpgradeNeeded')
-            resolve(createBlDb(event));
+            resolve(await createBlDb(event))
         };
     });
 };
@@ -219,38 +224,11 @@ $writeDbButton.addEventListener('click', () => {
     writeArrayToDb({dbName: 'BricklinkDB',dataArr:testArr});
 })
 
-async function writeBlDb ({dbName,data}) {
-    openBlDb({dbName}).then((db) => {
-        const transaction = db.transaction(["Elements"], "readwrite");
-        const objectStore = transaction.objectStore("Elements");
-    
-        // Add data to the object store
-        const request = objectStore.add(data);
-    
-        return new Promise((resolve, reject) => {
-            request.onsuccess = () => {
-                console.log("Data saved successfully!");
-                resolve("Data saved successfully!");
-            }
-        
-            request.onerror = (event) => {
-                console.log(`Error saving data: ${event.target.error}`);
-                reject(`Error saving data: ${event.target.error}`);
-            }
-        });
-    });
-};
-
-
-function writeArrayToDb ({dbName,dataArr}) {
-    let db
-    window.indexedDB.open(dbName).onsuccess = (event) => {
-        db = event.target.result;
-    };
+function writeArrayToDb ({dbName,objectStoreName,dataArr}) {
     openBlDb({dbName}).then((db) => {
         const reqArr = []
-        const transaction = db.transaction(["Elements"], "readwrite");
-        const objectStore = transaction.objectStore("Elements");
+        const transaction = db.transaction([objectStoreName], "readwrite");
+        const objectStore = transaction.objectStore(objectStoreName);
         const smallDataArr = [dataArr[0],dataArr[1],dataArr[2]]
         console.log('dataArr: ', smallDataArr)
         dataArr.forEach((elementData) => {
