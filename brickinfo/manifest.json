@@ -21,9 +21,10 @@
   },
   "permissions": [
     "webRequest",
-    "storage"
+    "storage",
+    "cookies"
   ],
-  "host_permissions": ["https://api.bricklink.com/api/affiliate/v1/*"],
+  "host_permissions": ["*://*.bricklink.com/*"],
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
