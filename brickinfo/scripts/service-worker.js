@@ -15,6 +15,8 @@
 // Provides credentials when an HTTP Basic Auth request is received.
 
 importScripts('../data/elementIdToBlPartIdColorId.js')
+importScripts('./db/writeArrayToDb.js')
+
 
 let blAffiliateApiKey = ''
 async function getApiKey(callback) {
@@ -176,6 +178,15 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       console.log('test:',{word: 'Error', desc: 'Element property does not exist in elementsObj.'})
       response({word: 'Error', desc: 'Element property does not exist in elementsObj.'});
     }
+  }
+  if (message.name === "writeArrayToDb") {
+    
+    
+      const dbName = message.dbName
+      const objectStoreName = message.objectStoreName
+      const dataArr = message.dataArr
+      writeArrayToDb({dbName,objectStoreName,dataArr})
+      response({word: 'Success', desc: 'Done writing array to indexeddb.'})
   }
   return true
 })

@@ -5,6 +5,7 @@ const $createDbButton = document.querySelector('#create-db')
 const $writeDbButton = document.querySelector('#write-db')
 
 
+
 async function getBlAffiliateApiKey () {
     const blAffiliateApiKeyObj = await chrome.storage.sync.get("blAffiliateApiKey")
     const blAffiliateApiKey = blAffiliateApiKeyObj.blAffiliateApiKey
@@ -169,8 +170,9 @@ $updateBlDbButton.addEventListener('click', () => {
                 const blElementsArr = colorsObjAndCodesArrToElements({colorsObj,codesArr})
                 console.log('blElementsArr: ',[blElementsArr[0],blElementsArr[1],blElementsArr[2]])
                 console.log('writing')
-                writeArrayToDb({dbName: 'BricklinkDB', objectStoreName: 'Elements', dataArr: blElementsArr})
-                console.log('done?')
+                chrome.runtime.sendMessage({ name: 'writeArrayToDb',  dbName: 'BricklinkDB', objectStoreName: 'Elements', dataArr: blElementsArr}, (response) => {
+                    console.log('done?')
+                })
             })
         } else {
             console.log('blNewSessionId cookie cannot be found. Please log in to bricklink.com and try again.')
@@ -178,78 +180,19 @@ $updateBlDbButton.addEventListener('click', () => {
     });
 });
 
-async function createBlDb(event) {
-    const createPromise = new Promise((resolve, reject) => {
-        const transaction = event.target.transaction;
-        const db = event.target.result;
-        console.log('eventTargetResult: ',db)
-        const objectStore = db.createObjectStore("Elements", { keyPath: "elementId"});
-        objectStore.createIndex("partIdArr", "partIdArr", { unique: false });
-        objectStore.createIndex("colorIdArr", "colorIdArr", { unique: false });
-        objectStore.transaction.oncompleted = () => {resolve(db)}
-    })
-    const createResponse = await createPromise
-    console.log('createResponse: ',createResponse)
-    return createResponse
-}
 
-async function openBlDb ({dbName}) {
-    return new Promise((resolve, reject) => {
-        const request = window.indexedDB.open(dbName, 1);
-
-        request.onerror = (event) => {
-            console.log('db error')
-            reject(`Error opening database: ${event.target.errorCode}`);
-        };
-
-        request.onsuccess = (event) => {
-            const db = event.target.result;
-            resolve(db);
-        };
-
-        request.onupgradeneeded = async (event) => {
-            console.log('onUpgradeNeeded')
-            resolve(await createBlDb(event))
-        };
-    });
-};
 
 $createDbButton.addEventListener('click', () => {
     // Open the database
-    openBlDb({dbName: 'BricklinkDB'});
+    chrome.runtime.sendMessage({ name: 'openDb', dbName: 'BricklinkDB'})
 })
 
 $writeDbButton.addEventListener('click', () => {
     const testArr = [{elementId: 10458, partId: 'a1', colorName: 'Black', colorId: 21},{elementId: 104542, partId: 'a12', colorName: 'Black', colorId: 211}]
-    writeArrayToDb({dbName: 'BricklinkDB',dataArr:testArr});
+    chrome.runtime.sendMessage({ name: 'writeArrayToDb', dataArr:testArr}, (response) => {
+        console.log('written')
+    })
 })
 
-function writeArrayToDb ({dbName,objectStoreName,dataArr}) {
-    openBlDb({dbName}).then((db) => {
-        const reqArr = []
-        const transaction = db.transaction([objectStoreName], "readwrite");
-        const objectStore = transaction.objectStore(objectStoreName);
-        const smallDataArr = [dataArr[0],dataArr[1],dataArr[2]]
-        console.log('dataArr: ', smallDataArr)
-        dataArr.forEach((elementData) => {
-            reqArr.push(
-                new Promise((resolve,reject) => {
-                    const req = objectStore.add(elementData)
-                    req.onerror = (event) => {
-                        event.preventDefault()
-                        console.log(event)
-                    }
-                    req.then(resolve())
-                })
-            )
-        })
-        Promise.all(reqArr)
-        .then(() => {
-            console.log('done writing')
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    });
-};
+
 
