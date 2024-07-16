@@ -3,6 +3,7 @@ const $blAffiliateApiKey = document.querySelector('input[name="bl-affiliate-api-
 const $updateBlDbButton = document.querySelector('#update-bl-db')
 const $createDbButton = document.querySelector('#create-db')
 const $writeDbButton = document.querySelector('#write-db')
+const $retrieveDbButton = document.querySelector('#retrieve-db')
 
 
 
@@ -191,6 +192,12 @@ $writeDbButton.addEventListener('click', () => {
     const testArr = [{elementId: 10458, partId: 'a1', colorName: 'Black', colorId: 21},{elementId: 104542, partId: 'a12', colorName: 'Black', colorId: 211}]
     chrome.runtime.sendMessage({ name: 'writeArrayToDb', dataArr:testArr}, (response) => {
         console.log('written')
+    })
+})
+
+$retrieveDbButton.addEventListener('click', () => {
+    chrome.runtime.sendMessage({ name: 'getDb', dbName: 'BricklinkDB', objectStoreName: 'Elements', elementId: 6170292 }, (response) => {
+        console.log('response: ', response)
     })
 })
 
