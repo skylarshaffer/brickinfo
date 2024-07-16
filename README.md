@@ -52,6 +52,9 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 * 1.0
     * Initial Release
+ 
+* 1.1
+    * Messy code, fast app
 
 ## Known Issues
 
