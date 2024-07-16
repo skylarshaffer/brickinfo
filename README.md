@@ -63,6 +63,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [ ] Prices for elements will not show if that element does not have at least one
 
+- [ ] First navigation to or refresh of PAB will not load prices, you must change search settings or current page
+
 ## Roadmap
 
 - [x] Move API key variable to popup.js so extension can be packed
