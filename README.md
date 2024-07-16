@@ -19,17 +19,17 @@ https://github.com/user-attachments/assets/7719a4e2-35c6-45e9-97df-068b7e41a55d
 
 The below assumes some coding experience and step detail is lacking. Better instructions will be added at a later date. If you have questions, please email me at [skylar@brickquery.com](mailto:skylar@brickquery.com).
 
-### From Source
-
-1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want
-2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
-
 ### From Release
 
 1. Download the release zip and extract it wherever you want
 2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
-## Usage
+### From Source
+
+1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want
+2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+
+## Before You Begin
 
 ### Set API Key
 
