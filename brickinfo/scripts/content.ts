@@ -1,7 +1,17 @@
+type BricklinkProperty = {
+  elementId?: number,
+  partId?: string,
+  colorId?: number
+  price?: number
+}
 
-const $ul = document.querySelector('#pab-results-wrapper ul');
+type BrickElement = {
+  bricklink?: BricklinkProperty
+}
 
-function waitForElm(selector) {
+
+
+function waitForElm(selector: string) {
   return new Promise(resolve => {
       if (document.querySelector(selector)) {
           return resolve(document.querySelector(selector));
@@ -24,7 +34,7 @@ function waitForElm(selector) {
 
 waitForElm('#pab-results-wrapper ul').then((elm) => {
   console.log('Element is ready');
-  const $ul = elm
+  const $ul = elm as HTMLUListElement;
   console.log($ul)
   function addBricklinkPrice(div, price) {
     // create a new div element
@@ -57,7 +67,7 @@ waitForElm('#pab-results-wrapper ul').then((elm) => {
               if ($itemIdSpan) {
                 const elementId = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)[0]
                 console.log('sending getBlPrice')
-                const element = {}
+                const element = {} as BrickElement
                 element.bricklink = {}
                 chrome.runtime.sendMessage({ name: 'getBlPrice', elementId }, (response) => {
                   console.log('got back getBlPrice')

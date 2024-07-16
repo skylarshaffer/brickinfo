@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "noEmit": false,
+    "module": "es2015",
     "moduleDetection": "legacy"
   }
 }

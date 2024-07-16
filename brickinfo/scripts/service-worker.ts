@@ -1,22 +1,22 @@
-// Copyright 2023 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+type BricklinkProperty = {
+  elementId?: number,
+  partId?: string,
+  colorId?: number
+  price?: number
+}
 
-// Provides credentials when an HTTP Basic Auth request is received.
+type BrickElement = {
+  bricklink?: BricklinkProperty
+}
 
-importScripts('./db/writeArrayToDb.js')
-importScripts('./db/getAllDb.js')
-importScripts('./db/getDb.js')
+type BricklinkDBElement = {
+  elementId?: string,
+  partIdArr?: string[],
+  colorIdArr?: string[]
+}
+
+import { writeArrayToDb } from "./db/writeArrayToDb"
+import { getDb } from "./db/getDb"
 
 
 let blAffiliateApiKey = ''
@@ -113,14 +113,14 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       console.log('reqUrl: ',reqUrl)
       const elementsArrPromiseArray = []
       elementsArr.forEach((element) => {
-        elementsArrPromiseArray.push(new Promise((resolve, reject) => {
+        elementsArrPromiseArray.push(new Promise<void>((resolve, reject) => {
           getDb({dbName: 'BricklinkDB',objectStoreName: 'Elements',elementId: element})
-          .then((result) => {
+          .then((result: BricklinkDBElement) => {
             elementsObj[element] = {
               bricklink: {
                 partId: result.partIdArr[0],
                 colorId: result.colorIdArr[0]
-              }
+              } as BrickElement
             }
             console.log('elementsObj: ',elementsObj)
             blReqArr.push(
@@ -198,14 +198,6 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       const dataArr = message.dataArr
       writeArrayToDb({dbName,objectStoreName,dataArr})
       response({word: 'Success', desc: 'Done writing array to indexeddb.'})
-  }
-  if (message.name === "getAllDb") {
-    const dbName = message.dbName
-    const objectStoreName = message.objectStoreName
-    getAllDb({dbName,objectStoreName}).then((response) => {
-      console.log('response success: ',response)
-      response(response)
-    })
   }
   if (message.name === "getDb") {
     const dbName = message.dbName

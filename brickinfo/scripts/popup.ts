@@ -1,11 +1,8 @@
-const $form = document.querySelector("form")
-const $blAffiliateApiKey = document.querySelector('input[name="bl-affiliate-api-key"]')
-const $updateBlDbButton = document.querySelector('#update-bl-db')
-const $createDbButton = document.querySelector('#create-db')
-const $writeDbButton = document.querySelector('#write-db')
-const $retrieveDbButton = document.querySelector('#retrieve-db')
+const $form = document.querySelector("form") as HTMLFormElement
+const $blAffiliateApiKey = document.querySelector('input[name="bl-affiliate-api-key"]') as HTMLInputElement
+const $updateBlDbButton = document.querySelector('#update-bl-db') as HTMLButtonElement
 
-
+import { tsvToObj } from "./conversion/tsvToObj"
 
 async function getBlAffiliateApiKey () {
     const blAffiliateApiKeyObj = await chrome.storage.sync.get("blAffiliateApiKey")
@@ -25,35 +22,6 @@ $form.addEventListener('submit',function(event){
         console.log("Value is set");
     });
 })
-
-function tsvToObj({data,downloadType}) {
-    const newObj = {}
-    console.log('downloadType: ',downloadType)
-    const lines = data.split('\r\n')
-    console.log(downloadType, 'lines: ', lines)
-    lines.forEach((line, index) => {
-        if (index !== 0 && line !== '') {
-            const splitLine = line.split("\t")
-            switch (downloadType) {
-                case 'itemtypes':
-                    newObj[splitLine[0]] = splitLine[1]
-                    break;
-                case 'categories':
-                    newObj[splitLine[0]] = splitLine[1]
-                    break;
-                case 'colors':
-                    newObj[splitLine[1]] = splitLine[0]
-                    break;
-                case 'codes':
-                    newObj[splitLine[2]] = {itemId: splitLine[0], colorName: splitLine[1]}
-                    break;
-                default:
-                    console.log({word: 'Error', data: 'Unexpected tsv, not sure what to do.'})
-            }
-        }
-    })
-    return newObj
-}
 
 function tsvToArr({data,downloadType}) {
     const newArr = []
@@ -122,9 +90,9 @@ $updateBlDbButton.addEventListener('click', () => {
     chrome.cookies.get({ url: 'https://bricklink.com', name: 'BLNEWSESSIONID' },(blNewSessionIdCookie) => {
         if (blNewSessionIdCookie) {
             const blNewSessionId = blNewSessionIdCookie.value
-            let blColorsResponse = ''
-            let blCodesResponse = '' 
-            const colorsPromise = new Promise((resolve, reject) => {
+            let blColorsResponse: { data: any; downloadType: string }
+            let blCodesResponse: { data: any; downloadType: string }
+            const colorsPromise = new Promise<void>((resolve, reject) => {
                 chrome.runtime.sendMessage({ name: 'getBlDb', blNewSessionId, downloadType: 'colors'}, (response) => {
                     if (response.word === 'Error') {
                         if (response.desc === 'Not logged in to Bricklink') {
@@ -142,7 +110,7 @@ $updateBlDbButton.addEventListener('click', () => {
                     resolve()
                 })
             })
-            const codesPromise = new Promise((resolve, reject) => {
+            const codesPromise = new Promise<void>((resolve, reject) => {
                 chrome.runtime.sendMessage({ name: 'getBlDb', blNewSessionId, downloadType: 'codes'}, (response) => {
                     if (response.word === 'Error') {
                         if (response.desc === 'Not logged in to Bricklink') {
