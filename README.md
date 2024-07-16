@@ -5,7 +5,7 @@ A quick and responsive Manifest V3 Chrome Extension that uses the Bricklink Affi
 ## Description
 
 If you want to save time swapping tabs and comparing literal **thousands** of bricks one-by-one then this extension is for you. Just install it and browse Pick a Brick as normal. Prices will show below the PAB prices as they load.
-Page load times are NOT affected by brickinfo. Brickinfo allows page rendering uninterrupted, and simply injects new information to the page as it gets it.
+Page load times should NOT be affected by brickinfo. Brickinfo allows page rendering uninterrupted, and simply injects new information to the page as it gets it.
 
 This extension is not yet released, and there are currently no active users. I am working to develop this quickly and am hoping to launch within the month. This source can be used to run the extension, but it is VERY early. **User discretion advised.**
 
@@ -21,8 +21,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 ### Extension
 
-1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want.
-2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked).
+1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want
+2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 ## Usage
 
@@ -30,41 +30,23 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 1. Install the extension (above)
 2. Grant permissions if prompted
-3. Add your affiliate API key
+3. Add your affiliate API key **[NECESSARY]**
    1. Click the extension icon to open the extension settings popup.
    2. Replace **undefined** with your Affiliate API Key
 
-        ![image](https://github.com/user-attachments/assets/1d6682af-d37f-44d0-9ee2-8e628f05d8ce)
+         ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
+
       
    3. Click **Save**
    
-4.  Browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick).
+4.  Browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick)
 
-### Update Database
+### Update Parts Database
 
-All below database operations will take place in the **data** folder.
-
-1. Download the source zip, extract it, and copy the **data** folder wherever you want. 
-2. Login to [Bricklink](https://bricklink.com)
-3. Download latest **codes.xml** and **colors.xml** from Bricklink. Either:
-    1. Download from the below links:
-        1. [codes.xml](https://www.bricklink.com/catalogDownload.asp?downloadType=X&viewType=5)
-        2. [colors.xml](https://www.bricklink.com/catalogDownload.asp?downloadType=X&viewType=5)
-    
-    **OR**
-    
-    1. Navigate to [Catalog Download](https://www.bricklink.com/catalogDownload.asp)
-        1. codes.xml - Select the **Part and Color Codes** radio and set the dropdown from **Tab-Delimited File** to **XML**. Click **Download**.
-        2. colors.xml - Select the **Colors** radio and set the dropdown from **Tab-Delimited File** to **XML**. Click **Download**.
-
-        ![image](https://github.com/skylarshaffer/brickinfo/assets/161654841/e9741ac8-24ad-4616-8dc2-b5cd5868c9d2)
-
-4. Replace **data/xml/codes.xml** and **data/xml/colors.xml** with the ones you just downloaded.
-5. Run **data/fetch/codesXmlColorsXmlToElementIdToBlPartIdBlColorId.js** to update **data/js/elementIdToBlPartIdColorId.js**.
-
-### Replace Extension Database
-
-Copy **data/db/elementIdToBlPartIdColorId.js** to **brickinfo/data**, replacing the existing file.
+   1. Make sure you are **currently** logged into Bricklink in your browser **[NECESSARY]**
+   2. Click the extension icon to open the extension settings popup
+   3. Click **Update DB**
+         ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
 
 ## Version History
 
