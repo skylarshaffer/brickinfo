@@ -13,7 +13,7 @@ This extension is not yet released, and there are currently no active users. I a
 
 ![Screenshot](https://github.com/skylarshaffer/brickinfo/assets/161654841/7081b86e-101a-4445-8819-9cddd3e8b973)
 
-https://github.com/skylarshaffer/brickinfo/assets/161654841/168a192a-7859-4006-907d-f03447bbc763
+https://github.com/user-attachments/assets/7719a4e2-35c6-45e9-97df-068b7e41a55d
 
 ## Installation
 
