@@ -183,23 +183,3 @@ $updateBlDbButton.addEventListener('click', () => {
 
 
 
-$createDbButton.addEventListener('click', () => {
-    // Open the database
-    chrome.runtime.sendMessage({ name: 'openDb', dbName: 'BricklinkDB'})
-})
-
-$writeDbButton.addEventListener('click', () => {
-    const testArr = [{elementId: 10458, partId: 'a1', colorName: 'Black', colorId: 21},{elementId: 104542, partId: 'a12', colorName: 'Black', colorId: 211}]
-    chrome.runtime.sendMessage({ name: 'writeArrayToDb', dataArr:testArr}, (response) => {
-        console.log('written')
-    })
-})
-
-$retrieveDbButton.addEventListener('click', () => {
-    chrome.runtime.sendMessage({ name: 'getDb', dbName: 'BricklinkDB', objectStoreName: 'Elements', elementId: 6170292 }, (response) => {
-        console.log('response: ', response)
-    })
-})
-
-
-
