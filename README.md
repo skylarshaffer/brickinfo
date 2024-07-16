@@ -35,7 +35,6 @@ The below assumes some coding experience and step detail is lacking. Better inst
    2. Replace **undefined** with your Affiliate API Key
 
          ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
-
       
    3. Click **Save**
    
@@ -46,6 +45,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
    1. Make sure you are **currently** logged into Bricklink in your browser **[NECESSARY]**
    2. Click the extension icon to open the extension settings popup
    3. Click **Update DB**
+
          ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
 
 ## Version History
