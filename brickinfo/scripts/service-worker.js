@@ -14,8 +14,9 @@
 
 // Provides credentials when an HTTP Basic Auth request is received.
 
-importScripts('../data/elementIdToBlPartIdColorId.js')
 importScripts('./db/writeArrayToDb.js')
+importScripts('./db/getAllDb.js')
+importScripts('./db/getDb.js')
 
 
 let blAffiliateApiKey = ''
@@ -23,8 +24,8 @@ async function getApiKey(callback) {
   if (blAffiliateApiKey !== '') {
     callback(blAffiliateApiKey)
   }
-  const apiObj = await chrome.storage.sync.get("apiKey")
-  blAffiliateApiKey = apiObj.apiKey
+  const blAffiliateApiKeyObj = await chrome.storage.sync.get("blAffiliateApiKey")
+  blAffiliateApiKey = blAffiliateApiKeyObj.blAffiliateApiKey
   callback(blAffiliateApiKey) 
 }
 
@@ -110,64 +111,74 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       const baseUrl = 'https://api.bricklink.com/api/affiliate/v1'
       const reqUrl = `${baseUrl}/price_guide_batch?api_key=${apiKey}`
       console.log('reqUrl: ',reqUrl)
+      const elementsArrPromiseArray = []
       elementsArr.forEach((element) => {
-        elementsObj[element] = {
-          bricklink: {
-            partId: elementIdToBlPartIdColorId[element].partId,
-            colorId: elementIdToBlPartIdColorId[element].colorId
-          }
-        }
-        blReqArr.push(
-          {
-            "item":{
-              "no":elementsObj[element].bricklink.partId,
-              "type":"PART"
-            },
-            "color_id":elementsObj[element].bricklink.colorId
-          }
-        )
-      })
-      console.log('blReqArr: ',blReqArr)
-      console.log('about to request: ', apiKey)
-      fetch(reqUrl, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(blReqArr)
-      }).then((res) => {
-        if (res.status !== 200) {
-          if (res.status === 500) {
-            console.log({word: 'Error', desc: 'Affiliate API is down at the moment. Please wait.'});
+        elementsArrPromiseArray.push(new Promise((resolve, reject) => {
+          getDb({dbName: 'BricklinkDB',objectStoreName: 'Elements',elementId: element})
+          .then((result) => {
+            elementsObj[element] = {
+              bricklink: {
+                partId: result.partIdArr[0],
+                colorId: result.colorIdArr[0]
+              }
+            }
+            console.log('elementsObj: ',elementsObj)
+            blReqArr.push(
+              {
+                "item":{
+                  "no":elementsObj[element].bricklink.partId,
+                  "type":"PART"
+                },
+                "color_id":elementsObj[element].bricklink.colorId
+              }
+            )
+            resolve()
+          })
+        }))
+      });
+      Promise.all(elementsArrPromiseArray).then(() => {
+        console.log('blReqArr: ',blReqArr)
+        console.log('about to request: ', apiKey)
+        fetch(reqUrl, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(blReqArr)
+        }).then((res) => {
+          if (res.status !== 200) {
+            if (res.status === 500) {
+              console.log({word: 'Error', desc: 'Affiliate API is down at the moment. Please wait.'});
+              return
+            }
+            console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'});
             return
           }
-          console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'});
-          return
-        }
-        res.json().then((data) => {
-          const blResArr = data.data
-          const blPriceObj = {}
-          console.log('blResArr: ',blResArr)
-          blResArr.forEach((element) => {
-            blPriceObj[`${element.item.no}-${element.color_id}`] = (Number(element.inventory_used.total_price)/element.inventory_used.total_quantity).toFixed(2)
-          })
-          console.log('blPriceObj: ',blPriceObj)
-          for (const element in elementsObj) {
-            if (typeof blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`] !== 'undefined') {
-              console.log('price: ',blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`])
-              elementsObj[element].bricklink.price = blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`]
-            } else {
-              console.log('no price found')
-              elementsObj[element].bricklink.price = null
+          res.json().then((data) => {
+            const blResArr = data.data
+            const blPriceObj = {}
+            console.log('blResArr: ',blResArr)
+            blResArr.forEach((element) => {
+              blPriceObj[`${element.item.no}-${element.color_id}`] = (Number(element.inventory_used.total_price)/element.inventory_used.total_quantity).toFixed(2)
+            })
+            console.log('blPriceObj: ',blPriceObj)
+            for (const element in elementsObj) {
+              if (typeof blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`] !== 'undefined') {
+                console.log('price: ',blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`])
+                elementsObj[element].bricklink.price = blPriceObj[`${elementsObj[element].bricklink.partId}-${elementsObj[element].bricklink.colorId}`]
+              } else {
+                console.log('no price found')
+                elementsObj[element].bricklink.price = null
+              }
             }
-          }
-          console.log(elementsObj)
-          response({word: 'Success', desc: 'elementsObj done forming.'})
+            console.log(elementsObj)
+            response({word: 'Success', desc: 'elementsObj done forming.'})
+          })
+        }).catch((err) => {
+          console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'})
         })
-      }).catch((err) => {
-        console.log({word: 'Error', desc: 'There was a problem with the Affiliate API request.'})
       })
-    })
+    }) 
   }
   if (message.name === "getBlPrice") {
     const elementId = message.elementId
@@ -187,6 +198,23 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       const dataArr = message.dataArr
       writeArrayToDb({dbName,objectStoreName,dataArr})
       response({word: 'Success', desc: 'Done writing array to indexeddb.'})
+  }
+  if (message.name === "getAllDb") {
+    const dbName = message.dbName
+    const objectStoreName = message.objectStoreName
+    getAllDb({dbName,objectStoreName}).then((response) => {
+      console.log('response success: ',response)
+      response(response)
+    })
+  }
+  if (message.name === "getDb") {
+    const dbName = message.dbName
+    const objectStoreName = message.objectStoreName
+    const elementId = message.elementId
+    getDb({dbName,objectStoreName,elementId}).then((result) => {
+      console.log('response success: ',result)
+      response(result)
+    })
   }
   return true
 })
