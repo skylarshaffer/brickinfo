@@ -19,26 +19,27 @@ https://github.com/skylarshaffer/brickinfo/assets/161654841/168a192a-7859-4006-9
 
 The below assumes some coding experience and step detail is lacking. Better instructions will be added at a later date. If you have questions, please email me at [skylar@brickquery.com](mailto:skylar@brickquery.com).
 
-### Extension
+### From Source
 
 1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want
 2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
+### From Release
+
+1. Download the release zip and extract it wherever you want
+2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+
 ## Usage
 
-### Chrome Extension
+### Set API Key
 
-1. Install the extension (above)
-2. Grant permissions if prompted
-3. Add your affiliate API key **[NECESSARY]**
    1. Click the extension icon to open the extension settings popup.
    2. Replace **undefined** with your Affiliate API Key
 
          ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
       
    3. Click **Save**
-   
-4.  Browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick)
+   4. Browse [Pick a Brick](https://www.lego.com/en-us/pick-and-build/pick-a-brick)
 
 ### Update Parts Database
 
@@ -64,7 +65,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 ## Roadmap
 
-- [ ] Move API key variable to popup.js so extension can be packed
+- [x] Move API key variable to popup.js so extension can be packed
 
 - [ ] Obtain affiliate API key for this application (currently using scraped key)
 
@@ -72,7 +73,9 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [ ] Publish to chrome extension store
 
-- [ ] Opt-out update database daily and manual update through Chrome Extension popup
+- [ ] Auto-update database daily (opt-out)
+
+- [x] Manual update part database through Chrome Extension popup
 
 - [ ] Add styling and hyperlinks to injected prices
 
