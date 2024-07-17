@@ -21,8 +21,7 @@ export async function tsvToArr({tsv}: Props) {
     else if (lines[0].startsWith('Item Type ID')) {
         downloadType = 'itemtypes'
     }
-     else throw new Error("Unrecognized download type.")
-    console.log('downloadType: ',downloadType,'lines: ', lines)
+    else throw new Error("Unrecognized download type.")
     lines.forEach((line, index) => {
         if (index !== 0 && line !== '') {
             const splitLine = line.split("\t")
@@ -73,5 +72,6 @@ export async function tsvToArr({tsv}: Props) {
             }
         }
     })
+    console.log('downloadType: ',downloadType,'blDataItemArr: ', blDataItemArr)
     return blDataItemArr
 }

@@ -1,0 +1,29 @@
+import Dexie,{ Table, type EntityTable } from "dexie";
+import { BlElementsItem } from "../types/BlDataItems";
+import { openOrCreateDb } from "./openOrCreateDb";
+
+type Props = {
+    dbName: string;
+    objectStoreName: string;
+    dataArr: BlElementsItem[]
+}
+
+export async function writeArrayToDbTable ({ dbName, objectStoreName, dataArr }: Props): Promise<void> {
+    // In case dataArr is sparse
+    const compactArr = Object.values(dataArr)
+    const db = await openOrCreateDb({dbName, tables: [{name: 'Elements', columns: ['elementId', '*partIds*', 'colorId']}]})
+    try {
+        console.log(`Clearing ${objectStoreName} table of ${dbName} db.`)
+        await (db[objectStoreName as keyof Dexie] as unknown as Table).clear()
+        console.log(`Writing data to ${objectStoreName} table of ${dbName} db.`)
+        await (db[objectStoreName as keyof Dexie] as unknown as Table).bulkAdd(compactArr)
+        .catch((error) => {throw new Error(error)})
+    }
+    catch (error) {
+        throw new Error(`Failed to write data to ${objectStoreName} table of ${dbName} db.`)
+    }
+    finally {
+        console.log(`Successfully wrote data to ${objectStoreName} table of ${dbName} db.`)
+        return
+    }
+}

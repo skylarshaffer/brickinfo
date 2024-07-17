@@ -11,6 +11,7 @@ import { setStorageItemValue } from './operations/setStorageItemValue';
 const $form = document.querySelector("form") as HTMLFormElement
 const $blAffiliateApiKey = document.querySelector('input[name="bl-affiliate-api-key"]') as HTMLInputElement
 const $updateBlDbButton = document.querySelector('#update-bl-db') as HTMLButtonElement
+const $updateLogDiv = document.querySelector('#update-log') as HTMLDivElement
 
 getStorageItemValue({ key: 'blAffiliateApiKey' })
 .then((result) => {
@@ -29,10 +30,18 @@ $form.addEventListener('submit',function(event){
 })
 
 $updateBlDbButton.addEventListener('click',() => {
-  getStorageItemValue({key: 'blNewSessionId'}).then((blNewSessionId) => {
-    chrome.runtime.sendMessage({ type: 'updateBlDb', blNewSessionId }, (response) => {
-      console.log('Service worker response: ', response)
+  try {
+    getCookieValue({url: 'https://bricklink.com', cookieName: 'BLNEWSESSIONID'}).then((blNewSessionId) => {
+      console.log('Sending message: ',{ blNewSessionId: blNewSessionId, name: 'updateBlDb' })
+      chrome.runtime.sendMessage({ blNewSessionId, name: 'updateBlDb' }, (response) => {
+        console.log('Service worker response: ', response)
+        const $p = document.createElement('p')
+        $p.textContent = 'Successfully updated Bricklink Database.'
+        $updateLogDiv.append($p)
+      })
+      console.log("updateBlDb Message sent to service worker.")
     })
-    console.log("updateBlDb Message sent to service worker.")
-  })
+  } catch (error) {
+    console.log(error)
+  }
 });

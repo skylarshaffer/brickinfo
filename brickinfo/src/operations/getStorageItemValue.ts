@@ -7,6 +7,7 @@ export async function getStorageItemValue ({key}: Props): Promise<any> {
     if (!item) {
         throw new Error(`Unexpected: ${key} not found in Chrome synced storage.`)
     }
+    console.log('key: ',key, 'item: ', item)
     const value = item[key]
     return value
 }

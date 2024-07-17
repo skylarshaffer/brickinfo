@@ -15,6 +15,7 @@ type Props = {
 
 export async function openOrCreateDb ({dbName, tables = null}: Props) {
     const db = new Dexie(dbName);
+    console.log('db: ',db)
     const stores = {} as Record<string,string>
     if (tables) {
         tables.forEach((table) => {
@@ -23,5 +24,6 @@ export async function openOrCreateDb ({dbName, tables = null}: Props) {
         db.version(1).stores(stores);
     } 
     await db.open()
+    console.log('openDb: ',db)
     return db
 }
