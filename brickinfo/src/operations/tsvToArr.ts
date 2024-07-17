@@ -1,10 +1,17 @@
-import { BlDataItem, BlCodesItem, BlColorsItem, BlCategoriesItem, BlItemTypesItem } from "../types/BlDataItems";
+//  Imports
+////  Types
+import { BlDataItem, BlCodesItem, BlColorsItem, BlCategoriesItem, BlItemTypesItem } from "../types/BlDataTypes";
 
 
+// Native
+////  Types
 type Props = {
     tsv: string;
 }
 
+
+//  Exports
+////  Operations
 export async function tsvToArr({tsv}: Props) {
     const blDataItemArr = [] as BlDataItem[]
     const lines = tsv.split('\r\n')

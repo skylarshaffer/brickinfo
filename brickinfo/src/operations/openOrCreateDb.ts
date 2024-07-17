@@ -1,18 +1,23 @@
+//  Imports
+////  Dependencies
 import Dexie from "dexie";
 
 
-type Table = {
-    name: string;
-    columns: string[]
-}
-
+// Native
+////  Types
 type Props = {
     dbName: string;
-    tables?: Table[] | null
+    tables?: [
+        {
+            name: string;
+            columns: string[]
+        }
+    ] | null
 }
 
 
-
+//  Exports
+////  Operations
 export async function openOrCreateDb ({dbName, tables = null}: Props) {
     const db = new Dexie(dbName);
     console.log('db: ',db)
@@ -23,7 +28,7 @@ export async function openOrCreateDb ({dbName, tables = null}: Props) {
         })
         db.version(1).stores(stores);
     } 
-    await db.open()
+    await db.open().catch((error) => console.log('dexie error: ',error))
     console.log('openDb: ',db)
     return db
 }

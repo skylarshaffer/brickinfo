@@ -1,8 +1,10 @@
+//  Exports
+////  Types
 export type BlCodesItem = {
     elementId: number;
     partId: string;
     colorName: string;
-};
+}
 
 export type BlColorsItem = {
     colorId: number;
@@ -15,22 +17,16 @@ export type BlColorsItem = {
     forSale: number | null;
     yearFrom: number | null;
     yearTo: number | null;
-};
+}
 
 export type BlCategoriesItem = {
     categoryId: number;
     categoryName: string;
-};
+}
 
 export type BlItemTypesItem = {
     itemTypeId: string;
     itemTypeName: string;
-};
+}
 
 export type BlDataItem = BlCodesItem | BlColorsItem | BlCategoriesItem | BlItemTypesItem;
-
-export type BlElementsItem = {
-    elementId: number;
-    partIds: string[]
-    colorId: number;
-};

@@ -1,44 +1,85 @@
-'use strict';
+// Import
+////  Operations
+import { addBricklinkPrice } from "./operations/addBricklinkPrice"
+import { waitForElm } from "./operations/waitForElement"
+import { BlElementsIndex, BlElementsIndexItem, BlElementsPricesList } from "./types/BlElementsIndexTypes"
 
-// Content script file will run in the context of web page.
-// With content script you can manipulate the web pages using
-// Document Object Model (DOM).
-// You can also pass information to the parent extension.
 
-// We execute this script by making an entry in manifest.json file
-// under `content_scripts` property
+// Native
+////  Types
+type BricklinkProperty = {
+  elementId?: number,
+  partId?: string,
+  colorId?: number
+  price?: number
+}
 
-// For more information on Content Scripts,
-// See https://developer.chrome.com/extensions/content_scripts
+type BrickElement = {
+  bricklink: BricklinkProperty
+}
 
-// Log `title` of current active web page
-const pageTitle: string =
-  document.head.getElementsByTagName('title')[0].innerHTML;
-console.log(
-  `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
-);
 
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  (response) => {
-    console.log(response.message);
-  }
-);
+////  Operations
+waitForElm('#pab-results-wrapper ul').then((element) => {
+  console.log('Element is ready');
+  const $ul = element as HTMLUListElement;
+  console.log($ul)
 
-// Listen for message
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
-  }
-
-  // Send an empty response
-  // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-  sendResponse({});
-  return true;
-});
+  
+  const observer = new MutationObserver((mutationList) => {
+    mutationList.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-test') {
+        if ($ul.dataset.test !== 'pab-search-results-list-loading') {
+          const $divs = document.querySelectorAll('div[data-test="pab-item"]') as NodeListOf<HTMLDivElement>;
+          const elementsArr = [] as number[]
+          $divs.forEach((div) => {
+            const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')! as HTMLSpanElement
+            if ($itemIdSpan) {
+              const matchesArr = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)
+              if (matchesArr) {
+                const elementId = Number(matchesArr[0])
+                elementsArr.push(elementId)
+              }
+            }
+          })
+          chrome.runtime.sendMessage({ type: 'fetchPrices', elementsArr }, (blElementsIndex: BlElementsIndex) => {
+            console.log('got fetchPrices')
+            $divs.forEach((div) => {
+              const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')! as HTMLSpanElement
+              if ($itemIdSpan) {
+                const matchesArr = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)
+                if (!matchesArr) {
+                  throw new Error("Exception. MatchesArr should resolve for every span.")
+                }
+                const  elementId = Number(matchesArr[0]);
+                console.log('elementId: ',elementId)
+                if (blElementsIndex[elementId] !== undefined) {
+                  console.log('1');
+                  (blElementsIndex[elementId] as [BlElementsIndexItem]).forEach((blElementsIndexItem) => {
+                    console.log('2')
+                    console.log('blElementsIndexItem: ', blElementsIndexItem)
+                    if (blElementsIndexItem.prices !== undefined) {
+                      console.log('3')
+                      for (const priceType in blElementsIndexItem.prices as BlElementsPricesList) {
+                        console.log('4');
+                        const price = blElementsIndexItem.prices[priceType as keyof typeof blElementsIndexItem.prices]
+                        if (!isNaN(price as any) && price !== null && price !== undefined) {
+                          console.log('5');
+                          addBricklinkPrice(div, priceType, price)
+                        }
+                      }
+                    }
+                  })
+                }
+              }
+            })
+          })
+        }
+      }
+    })
+  })
+  
+  const target = $ul
+  const config = { attributes: true };
+  observer.observe(target, config);
+})

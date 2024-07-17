@@ -1,7 +1,12 @@
+//  Native
+////  Types
 type Props = {
     key: string;
 }
 
+
+//  Exports
+////  Operations
 export async function getStorageItemValue ({key}: Props): Promise<any> {
     const item = await chrome.storage.sync.get(key)
     if (!item) {

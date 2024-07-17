@@ -1,10 +1,19 @@
-import { BlCodesItem, BlColorsItem, BlElementsItem } from "../types/BlDataItems";
+//  Imports
+////  Types
+import { BlCodesItem, BlColorsItem } from "../types/BlDataTypes";
+import { BlElementsItem } from "../types/IndexedDBTypes";
 
+
+// Native
+////  Types
 type Props = {
     blCodesArr: BlCodesItem[];
     blColorsArr: BlColorsItem[];
 }
 
+
+//  Exports
+////  Operations
 export function blColorsAndCodesToElements ({blCodesArr, blColorsArr}: Props): BlElementsItem[] {
     const blColorIdLookup = {} as Record<string,number>
     blColorsArr.forEach((blColorsItem: BlColorsItem) => {

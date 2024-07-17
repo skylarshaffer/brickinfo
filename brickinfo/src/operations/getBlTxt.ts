@@ -1,8 +1,13 @@
+//  Native
+////  Types
 type Props = {
     downloadType: string;
     blNewSessionId: string;
 }
 
+
+//  Exports
+////  Operations
 export async function getBlTxt ({ downloadType, blNewSessionId }: Props): Promise<string> {
     let viewType
     switch (downloadType) {
