@@ -1,0 +1,27 @@
+import Dexie from "dexie";
+
+
+type Table = {
+    name: string;
+    columns: string[]
+}
+
+type Props = {
+    dbName: string;
+    tables?: Table[] | null
+}
+
+
+
+export async function openOrCreateDb ({dbName, tables = null}: Props) {
+    const db = new Dexie(dbName);
+    const stores = {} as Record<string,string>
+    if (tables) {
+        tables.forEach((table) => {
+            stores[table.name] = table.columns.join(', ')
+        })
+        db.version(1).stores(stores);
+    } 
+    await db.open()
+    return db
+}
