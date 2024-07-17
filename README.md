@@ -11,7 +11,9 @@ This extension is not yet released, and there are currently no active users. I a
 
 ## Demo
 
-![Screenshot](https://github.com/skylarshaffer/brickinfo/assets/161654841/7081b86e-101a-4445-8819-9cddd3e8b973)
+![demo](https://github.com/user-attachments/assets/6b8920e6-7bdb-4549-b83b-2db25264fa36)
+
+Video is outdated
 
 https://github.com/user-attachments/assets/7719a4e2-35c6-45e9-97df-068b7e41a55d
 
