@@ -24,6 +24,10 @@ The below assumes some coding experience and step detail is lacking. Better inst
 1. Download the release zip and extract it wherever you want
 2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
+### From Source
+
+1. Reference [chrome-extension-cli](https://github.com/dutiyesh/chrome-extension-cli) for help building from source
+
 ## Before You Begin
 
 ### Set API Key
@@ -54,6 +58,18 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 * 1.2
     * Refactored in chrome-extension-cli / TS. Half gorgeous, half 3AM. Fast and more features.
+
+## Troubleshooting
+
+- Make sure you have an **active** session with bricklink.com.
+
+- Make sure you update your Bricklink Database using the instructions above.
+
+- Verify you at least have SOME parts database by checking latest date in extension popup.
+
+- Make sure you have a valid Affiliate API Key and that it saved correctly in the extension popup.
+
+- Change pages on PAB without refreshing (for now).
 
 ## Known Issues
 
@@ -97,7 +113,11 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - Bricklink Affiliate API [REDACTED]
 
+- [Dexie](https://dexie.org)
+
 ## Acknowledgments
+
+- [chrome-extension-cli](https://github.com/dutiyesh/chrome-extension-cli) Massive thanks to [dutiyesh](https://github.com/dutiyesh) and all contributors for making this godsend of a package.
 
 - [Bricklink Catalog Download](https://www.bricklink.com/catalogDownload.asp) used for Element ID to Bricklink Part ID and Color ID conversion.
 
