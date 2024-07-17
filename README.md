@@ -24,11 +24,6 @@ The below assumes some coding experience and step detail is lacking. Better inst
 1. Download the release zip and extract it wherever you want
 2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
-### From Source
-
-1. Download the source zip, extract it, and copy the **brickinfo** folder wherever you want
-2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
-
 ## Before You Begin
 
 ### Set API Key
@@ -52,16 +47,19 @@ The below assumes some coding experience and step detail is lacking. Better inst
 ## Version History
 
 * 1.0
-    * Initial Release
+    * Initial Release.
  
 * 1.1
-    * Messy code, fast app
+    * Messy code, fast app.
+
+* 1.2
+    * Refactored in chrome-extension-cli / TS. Half gorgeous, half 3AM. Fast and more features.
 
 ## Known Issues
 
 - [ ] Bricklink Affiliate API key is not yet provided, and must be added manually. This key was leaked, and I disclosed it to Bricklink, meaning it may stop working at any time
 
-- [ ] Prices for elements will not show if that element does not have at least one
+- [x] Prices for elements will not show if that element does not have at least one
 
 - [ ] First navigation to or refresh of PAB will not load prices, you must change search settings or current page
 
@@ -71,7 +69,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [ ] Obtain affiliate API key for this application (currently using scraped key)
 
-- [ ] Build packed extension
+- [x] Build packed extension
 
 - [ ] Publish to chrome extension store
 
@@ -81,9 +79,9 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [ ] Add styling and hyperlinks to injected prices
 
-- [ ] Add more types of prices
+- [x] Add more types of prices
 
-- [ ] Add fallback average price algorithms when necessary values are not present in inventory_used
+- [x] Add fallback average price algorithms when necessary values are not present in inventory_used
 
 - [x] Maybe switch over to per-div scraping for element ID and eliminate need for LEGO.com GraphQL at all. Would require element to color DB expansion
 
