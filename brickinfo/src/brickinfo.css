@@ -1,0 +1,29 @@
+div.lego-price-table {
+
+    .column {
+        display: flex; 
+        flex-direction: column;
+    }
+
+    .row {
+        display: flex; 
+        flex-direction: row;
+    }
+
+    .grow {
+        flex-grow: 1;
+    }
+
+    ._38 {
+        min-height: 38px
+    }
+    
+    text-align: center;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: var(--ds-color-layer-subdued);
+    padding-top: var(--ds-spacing-2xs);
+    padding-bottom: var(--ds-spacing-2xs);
+    flex-direction: column;
+    border-radius: 4px;
+}
