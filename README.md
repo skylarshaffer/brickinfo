@@ -17,7 +17,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 ### From Release
 
-1. Download the release zip and extract it wherever you want
+1. Download the [latest release](https://github.com/skylarshaffer/brickinfo/releases) zip and extract it wherever you want
 2. Follow the unpacked extension loading instructions [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 ### From Source
