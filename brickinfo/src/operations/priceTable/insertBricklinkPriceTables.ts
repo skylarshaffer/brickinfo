@@ -42,7 +42,7 @@ export async function insertBricklinkPriceTables (): Promise<Record<number,LegoP
                     const $cloneLegoPriceTable = $legoPriceTable.cloneNode(true) as HTMLDivElement
                     $cloneLegoPriceTable.classList.add(elementId.toString())
                     legoPriceTableObj[elementId] = $cloneLegoPriceTable
-                    $divsPabSearchResult.insertBefore($cloneLegoPriceTable,$divsPabSearchResult.nextSibling);
+                    $divsPabSearchResult.insertBefore($cloneLegoPriceTable,$divPabItemPriceContainer.nextSibling);
                     resolve()
                 })
             )
