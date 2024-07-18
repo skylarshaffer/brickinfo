@@ -8,8 +8,6 @@ import { removeOldPriceTables } from "./removeOldPriceTables";
 //  Exports
 ////  Operations
 export async function insertBricklinkPriceTables (): Promise<Record<number,LegoPriceTable>> {
-    createLegoPriceTable()
-    removeOldPriceTables()
     function getLegoPabSearchResults (): NodeListOf<HTMLDivElement> {
         const $divsPabSearchResults: NodeListOf<HTMLDivElement> | null = 
             document.querySelectorAll('div[data-test="pab-item"]')
