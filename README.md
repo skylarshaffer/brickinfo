@@ -50,17 +50,6 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
          ![extension](https://github.com/user-attachments/assets/d3dcde35-ca9f-4860-bda4-4e3847376b04)
 
-## Version History
-
-* 1.0
-    * Initial Release.
- 
-* 1.1
-    * Messy code, fast app.
-
-* 1.2
-    * Refactored in chrome-extension-cli / TS. Half gorgeous, half 3AM. Fast and more features.
-
 ## Troubleshooting
 
 - Make sure you have an **active** session with bricklink.com.
