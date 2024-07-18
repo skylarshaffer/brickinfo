@@ -4,8 +4,7 @@ A quick and responsive Manifest V3 Chrome Extension that uses the Bricklink Affi
 
 ## Description
 
-If you want to save time swapping tabs and comparing literal **thousands** of bricks one-by-one then this extension is for you. Just install it and browse Pick a Brick as normal. Prices will show below the PAB prices as they load.
-Page load times should NOT be affected by brickinfo. Brickinfo allows page rendering uninterrupted, and simply injects new information to the page as it gets it.
+If you want to save time swapping tabs and comparing literal **thousands** of bricks one-by-one then this extension is for you. Just install it and browse Pick a Brick as normal. Pages will load at the same speed, and prices will show on the page once they are ready.
 
 ## Demo
 
