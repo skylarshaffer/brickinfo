@@ -9,7 +9,7 @@ Page load times should NOT be affected by brickinfo. Brickinfo allows page rende
 
 ## Demo
 
-https://github.com/user-attachments/assets/bec71b15-780c-4960-9604-997f1552fc3e
+https://github.com/user-attachments/assets/0f09f917-8602-4642-9527-74bb9be2fbac
 
 ## Installation
 
@@ -88,7 +88,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [x] Maybe switch over to per-div scraping for element ID and eliminate need for LEGO.com GraphQL at all. Would require element to color DB expansion
 
-- [ ] Add user customization for average price type (Used, New, etc)
+- [x] Add user customization for average price type (Used, New, etc)
 
 - [ ] Automatically switch currency based on session
 
