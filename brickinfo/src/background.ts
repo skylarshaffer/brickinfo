@@ -16,6 +16,7 @@ import Dexie, { Table } from "dexie";
 import { BlElementsItem } from "./types/IndexedDBTypes";
 import { getBlPriceList } from "./operations/getBlPriceList";
 import { getBlElementsIndex } from "./operations/getBlElementsIndex";
+import { getCookieValue } from "./operations/getCookieValue";
 
 
 //  Native
@@ -71,11 +72,11 @@ chrome.runtime.onMessage.addListener((message: IncomingBackgroundMessage, sender
           ).then(([blResponseItemArr,blElementsIndex]) => {
             console.log('blResponseItemArr: ', blResponseItemArr)
             blResponseItemArr?.forEach((blResponseItem) => {
-              blElementsIndex[blResponseItem.item.no][ blResponseItem.color_id].prices = {
-                inventory_new: (Number(blResponseItem.inventory_new.total_price)/blResponseItem.inventory_new.total_quantity).toFixed(2),
-                inventory_used: (Number(blResponseItem.inventory_used.total_price)/blResponseItem.inventory_used.total_quantity).toFixed(2),
-                ordered_new: (Number(blResponseItem.ordered_new.total_price)/blResponseItem.ordered_new.total_quantity).toFixed(2),
-                ordered_used: (Number(blResponseItem.ordered_used.total_price)/blResponseItem.ordered_used.total_quantity).toFixed(2)
+              blElementsIndex[blResponseItem.item.no][blResponseItem.color_id].prices = {
+                inventory_new: isNaN(blResponseItem.inventory_new.total_price as unknown as number) ? '' : '$' + (Number(blResponseItem.inventory_new.total_price)/blResponseItem.inventory_new.total_quantity).toFixed(2),
+                inventory_used: isNaN(blResponseItem.inventory_used.total_price as unknown as number) ? '' : '$' + (Number(blResponseItem.inventory_used.total_price)/blResponseItem.inventory_used.total_quantity).toFixed(2),
+                ordered_new: isNaN(blResponseItem.ordered_new.total_price as unknown as number) ? '' : '$' + (Number(blResponseItem.ordered_new.total_price)/blResponseItem.ordered_new.total_quantity).toFixed(2),
+                ordered_used: isNaN(blResponseItem.ordered_used.total_price as unknown as number) ? '' : '$' + (Number(blResponseItem.ordered_used.total_price)/blResponseItem.ordered_used.total_quantity).toFixed(2)
               };
             })
             console.log('response blElementsIndex): ', blElementsIndex)
@@ -92,3 +93,31 @@ chrome.runtime.onMessage.addListener((message: IncomingBackgroundMessage, sender
   //-Return true is how service worker communicates it is processing an asynchronous response. All requests should run quick and spit out return true before their eventual response.
   return true
 });
+
+getStorageItemValue({ key: 'BricklinkDB-Elements-update' })
+.then((result: number) => {
+  if (result === undefined) {
+    console.log('last updated: ', result)
+    getCookieValue({url: 'https://bricklink.com', cookieName: 'BLNEWSESSIONID'}).then((blNewSessionId) => {
+      //-Send message to service worker. Popup can be closed at this point.
+      const blCodesTsvPromise = getBlTxt({downloadType: 'codes',blNewSessionId: blNewSessionId})
+      const blColorsTsvPromise = getBlTxt({downloadType: 'colors',blNewSessionId: blNewSessionId})
+      //-Once both txts are in, feed them to tsvToArr. Technically more efficient if separated. Works for now, fix later.
+      Promise.all([blCodesTsvPromise,blColorsTsvPromise]).then(([blCodesTsv,blColorsTsv]) => {
+        const blCodesArrPromise = tsvToArr({tsv: blCodesTsv}) as Promise<BlCodesItem[]>
+        const blColorsArrPromise = tsvToArr({tsv: blColorsTsv}) as Promise<BlColorsItem[]>
+        //-Once both arrays are in, feed them to blColorsAndCodesToElements.
+        Promise.all([blCodesArrPromise,blColorsArrPromise]).then(([blCodesArr,blColorsArr]) => {
+          const blElementsArr = blColorsAndCodesToElements({blCodesArr, blColorsArr})
+          //-Once we have a db-ready array, feed it to writeArrayToDbTable for final write.
+          writeArrayToDbTable({ dbName: 'BricklinkDB', objectStoreName: 'Elements', dataArr: blElementsArr})
+        })
+      })
+    })
+  }
+})
+
+
+function updateDbInfo() {
+  throw new Error("Function not implemented.");
+}
