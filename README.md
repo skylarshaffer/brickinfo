@@ -7,15 +7,9 @@ A quick and responsive Manifest V3 Chrome Extension that uses the Bricklink Affi
 If you want to save time swapping tabs and comparing literal **thousands** of bricks one-by-one then this extension is for you. Just install it and browse Pick a Brick as normal. Prices will show below the PAB prices as they load.
 Page load times should NOT be affected by brickinfo. Brickinfo allows page rendering uninterrupted, and simply injects new information to the page as it gets it.
 
-This extension is not yet released, and there are currently no active users. I am working to develop this quickly and am hoping to launch within the month. This source can be used to run the extension, but it is VERY early. **User discretion advised.**
-
 ## Demo
 
-![demo](https://github.com/user-attachments/assets/6b8920e6-7bdb-4549-b83b-2db25264fa36)
-
-Video is outdated
-
-https://github.com/user-attachments/assets/7719a4e2-35c6-45e9-97df-068b7e41a55d
+https://github.com/user-attachments/assets/bec71b15-780c-4960-9604-997f1552fc3e
 
 ## Installation
 
@@ -52,7 +46,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 ## Troubleshooting
 
-- Make sure you have an **active** session with bricklink.com.
+- Make sure you have an **active** session with bricklink.com (only necessary for DB download).
 
 - Make sure you update your Bricklink Database using the instructions above.
 
@@ -68,7 +62,7 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [x] Prices for elements will not show if that element does not have at least one
 
-- [ ] First navigation to or refresh of PAB will not load prices, you must change search settings or current page
+- [x] First navigation to or refresh of PAB will not load prices, you must change search settings or current page
 
 ## Roadmap
 
@@ -84,7 +78,9 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [x] Manual update part database through Chrome Extension popup
 
-- [ ] Add styling and hyperlinks to injected prices
+- [x] Add styling to injected prices
+
+- [x] Add hyperlinks to injected prices
 
 - [x] Add more types of prices
 
