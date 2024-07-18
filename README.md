@@ -72,6 +72,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 - [x] Move API key variable to popup.js so extension can be packed
 
 - [ ] Obtain affiliate API key for this application (currently using scraped key)
+ 
+- [ ] Move to offline price database with 1 day TLS
 
 - [x] Build packed extension
       
