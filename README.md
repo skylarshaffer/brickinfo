@@ -9,6 +9,8 @@ Page load times should NOT be affected by brickinfo. Brickinfo allows page rende
 
 ## Demo
 
+![1-4-DEMO](https://github.com/user-attachments/assets/e9abcef9-5bd4-4613-8c9e-cd9443a12ebf)
+
 https://github.com/user-attachments/assets/0f09f917-8602-4642-9527-74bb9be2fbac
 
 ## Installation
