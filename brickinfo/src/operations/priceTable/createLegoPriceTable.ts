@@ -13,17 +13,18 @@ export async function createLegoPriceTable (): Promise<LegoPriceTable> {
         ??  null
     if ($liFirstLeaf === null) throw new Error('Could not find the target li element.')
     const $divPabItemPriceContainer: HTMLDivElement | null =
-            $liFirstLeaf.querySelector('div:has(span[data-test="pab-item-price"]')
+            $liFirstLeaf.querySelector('div[class*="ElementLeaf_price"]:has(span[data-test="pab-item-price"]')
         ??  $liFirstLeaf.querySelector('div[class*="ElementLeaf_price"]')
+        ??  $liFirstLeaf.querySelector('div:has(span[data-test="pab-item-price"]')
         ??  document.querySelector('div[class*="ElementLeaf_price"]')
         ??  null
     if ($divPabItemPriceContainer === null) throw new Error('Could not find the target div element.')
-    const $spanPabBestsellerBadge = $liFirstLeaf.querySelector('span[class*="ElementLeaf_badgeContainer"]') as HTMLSpanElement
+    const $spanPabBestsellerBadge = $liFirstLeaf.querySelector('span[class*="ElementLeaf_badgeContainer"]') as HTMLSpanElement || $liFirstLeaf.querySelector('span:has(span[data-test="pab-item-label"])') as HTMLSpanElement
     const spanPabElementItemIdClass = ($liFirstLeaf.querySelector('span[data-test="element-item-id"]') as HTMLSpanElement).className
     const spanPabItemPriceClass = ($liFirstLeaf.querySelector('span[data-test="pab-item-price"]') as HTMLDivElement).className
     if ($spanPabBestsellerBadge === null || spanPabElementItemIdClass === null || spanPabItemPriceClass === null) console.log('An important element or class could not be found in the DOM. Moving on without it.')
     const $legoPriceTable = $divPabItemPriceContainer.cloneNode(true) as HTMLDivElement
-    $legoPriceTable.classList.add('unnamed-price-table')
+    $legoPriceTable.classList.add('lego-price-table')
 
     $legoPriceTable.innerHTML = `
     <div class="row">
@@ -57,8 +58,15 @@ export async function createLegoPriceTable (): Promise<LegoPriceTable> {
     `
     const $legoPriceTableBadge = $spanPabBestsellerBadge.cloneNode(true) as HTMLSpanElement
     if ($legoPriceTableBadge.firstChild) {
-        $legoPriceTableBadge.style.setProperty('position', 'relative', 'important')
-        $legoPriceTableBadge.firstChild.textContent = 'Unnamed Table'
+        const legoPriceTableBadgeFirstChildClass = ($legoPriceTableBadge.firstChild as HTMLSpanElement).className
+        const $bricklinkPartLabelButton = document.createElement('a');
+        $bricklinkPartLabelButton.className = legoPriceTableBadgeFirstChildClass
+        //-Kill children
+        $legoPriceTableBadge.innerHTML= ''
+        $legoPriceTableBadge.style.setProperty('position', 'relative', 'important');
+        $bricklinkPartLabelButton.classList.add('bricklink-part-label')
+        $bricklinkPartLabelButton.textContent = 'BRICKLINK'
+        $legoPriceTableBadge.append($bricklinkPartLabelButton)
         $legoPriceTable.prepend($legoPriceTableBadge)
     }
     return $legoPriceTable
