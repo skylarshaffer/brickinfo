@@ -72,6 +72,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 - [ ] Obtain affiliate API key for this application (currently using scraped key)
 
 - [x] Build packed extension
+      
+- [ ] Ship with stale, offline DB, or provide first DB download myself and let the rest be handled by BL
 
 - [ ] Publish to chrome extension store
 
