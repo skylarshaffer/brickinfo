@@ -61,6 +61,8 @@ The below assumes some coding experience and step detail is lacking. Better inst
 
 - [ ] Bricklink Affiliate API key is not yet provided, and must be added manually. This key was leaked, and I disclosed it to Bricklink, meaning it may stop working at any time
 
+- [ ] For some reason later pages are not working
+
 - [x] Prices for elements will not show if that element does not have at least one
 
 - [x] First navigation to or refresh of PAB will not load prices, you must change search settings or current page
