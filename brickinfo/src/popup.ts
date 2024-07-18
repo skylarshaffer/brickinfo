@@ -2,7 +2,7 @@
 
 //  Imports
 ////  CSS
-import './popup.css';
+import './brickinfo.css';
 
 ////  Operations
 import { getStorageItemValue } from './operations/getStorageItemValue';
