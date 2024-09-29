@@ -9,7 +9,7 @@ import { removeOldPriceTables } from "./removeOldPriceTables";
 ////  Operations
 export async function insertBricklinkPriceTables (): Promise<Record<number,LegoPriceTable>> {
     function getLegoPabSearchResults (): NodeListOf<HTMLDivElement> {
-        const $divsPabSearchResults: NodeListOf<HTMLDivElement> | null = 
+        const $divsPabSearchResults: NodeListOf<HTMLDivElement> | null =
             document.querySelectorAll('div[data-test="pab-item"]')
         ??  document.querySelectorAll('div[data-test*="pab-item"]')
         ??  document.querySelectorAll('ul[data-test="pab-search-results-list"] > li > div')
@@ -26,12 +26,12 @@ export async function insertBricklinkPriceTables (): Promise<Record<number,LegoP
             insertPromisesArr.push(
                 new Promise((resolve, reject) => {
                     const $divPabItemPriceContainer: HTMLDivElement | null =
-                            $divsPabSearchResult.querySelector('div:has(span[data-test="pab-item-price"]')
+                            $divsPabSearchResult.querySelector('div[data-test="pab-item-price"]')
                         ??  $divsPabSearchResult.querySelector('div[class*="ElementLeaf_price"]')
                         ??  $divsPabSearchResult.querySelector('div[class*="ElementLeaf_price"]')
                         ??  null
                     if ($divPabItemPriceContainer === null) throw new Error('Could not find the target div element.')
-                    const $itemIdSpan = $divsPabSearchResult.querySelector('span[data-test="element-item-id"]') as HTMLSpanElement
+                    const $itemIdSpan = $divsPabSearchResult.querySelector('p[data-test="pab-item-elementId"]') as HTMLParagraphElement
                     const matchesArr = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)
                     if (!matchesArr) {
                       throw new Error("Exception. MatchesArr should resolve for every span.")
