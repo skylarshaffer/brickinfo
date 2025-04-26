@@ -1,12 +1,12 @@
 div.lego-price-table {
 
     .column {
-        display: flex; 
+        display: flex;
         flex-direction: column;
     }
 
     .row {
-        display: flex; 
+        display: flex;
         flex-direction: row;
     }
 
@@ -17,7 +17,11 @@ div.lego-price-table {
     ._38 {
         min-height: 38px
     }
-    
+
+    a {
+      color: #141414
+    }
+
     text-align: center;
     justify-content: space-between;
     align-items: stretch;
