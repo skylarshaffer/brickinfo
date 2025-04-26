@@ -30,7 +30,7 @@ waitForElm('#pab-results-wrapper ul').then((element) => {
   const $divs = document.querySelectorAll('div[data-test="pab-item"]') as NodeListOf<HTMLDivElement>;
   const elementsArr = [] as number[]
   $divs.forEach((div) => {
-    const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')! as HTMLSpanElement
+    const $itemIdSpan = div.querySelector('p[data-test="pab-item-elementId"]')! as HTMLSpanElement
     if ($itemIdSpan) {
       const matchesArr = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)
       if (matchesArr) {
@@ -49,7 +49,7 @@ waitForElm('#pab-results-wrapper ul').then((element) => {
           const $divs = document.querySelectorAll('div[data-test="pab-item"]') as NodeListOf<HTMLDivElement>;
           const elementsArr = [] as number[]
           $divs.forEach((div) => {
-            const $itemIdSpan = div.querySelector('span[data-test="element-item-id"]')! as HTMLSpanElement
+            const $itemIdSpan = div.querySelector('p[data-test="pab-item-elementId"]')! as HTMLSpanElement
             if ($itemIdSpan) {
               const matchesArr = $itemIdSpan.textContent?.match(/(?<=ID: )[^/]+/)
               if (matchesArr) {
